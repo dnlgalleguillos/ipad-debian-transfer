@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Sirve una carpeta por HTTP en la red local para descargar fotos desde Safari en el iPad.
-# Uso: ./enviar.sh [carpeta] [puerto]
+# Serve a folder over HTTP on the local network so photos can be downloaded from Safari on the iPad.
+# Usage: ./enviar.sh [folder] [port]
 
 set -euo pipefail
 
@@ -8,18 +8,18 @@ DIR="${1:-$HOME/Pictures/Enviar}"
 PORT="${2:-8000}"
 
 if [[ ! -d "$DIR" ]]; then
-    echo "La carpeta no existe: $DIR" >&2
+    echo "Folder does not exist: $DIR" >&2
     exit 1
 fi
 
-echo "Sirviendo: $DIR"
-echo "Abre en Safari del iPad una de estas direcciones:"
+echo "Serving: $DIR"
+echo "Open one of these addresses in Safari on the iPad:"
 for ip in $(hostname -I); do
     [[ "$ip" == *:* ]] && continue
     echo "  http://$ip:$PORT"
 done
-echo "Mantén presionada la foto y elige 'Guardar imagen'."
-echo "Cierra el servidor con Ctrl+C cuando termines."
+echo "Long-press the photo and choose 'Save Image'."
+echo "Stop the server with Ctrl+C when you are done."
 echo
 
 exec python3 -m http.server "$PORT" --directory "$DIR"
